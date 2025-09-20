@@ -74,7 +74,7 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="hero-section">
-        <h1>Alumni Connect</h1>
+        <h1>Alumni Node</h1>
         <p>Connecting Alumni, Building Futures</p>
         <div className="hero-buttons">
           <Link to="/login" className="btn-primary">Login</Link>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import '../chat-styles.css';
 
 const Chat = () => {
   const { user } = useAuth();
@@ -102,23 +103,37 @@ const Chat = () => {
     <div className="chat-container">
       <div className="chat-layout">
         <div className="chat-sidebar">
-          <h3>Conversations</h3>
+          <div className="chat-sidebar-header">
+            <h3>Messages</h3>
+            <div className="online-status">
+              <span className="status-dot"></span>
+              Online
+            </div>
+          </div>
           <div className="conversations-list">
             {getFilteredConversations().map(conversation => (
               <div 
                 key={conversation.id}
-                className={`conversation-item ${activeChat === conversation.id ? 'active' : ''}`}
+                className={`conversation-card ${activeChat === conversation.id ? 'active' : ''}`}
                 onClick={() => selectChat(conversation.id)}
               >
-                <div className="conversation-info">
-                  <h4>{conversation.name}</h4>
-                  <p className="last-message">{conversation.lastMessage}</p>
+                <div className="avatar-container">
+                  <div className={`avatar ${conversation.role}`}>
+                    {conversation.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="status-indicator"></div>
                 </div>
-                <div className="conversation-meta">
-                  <span className="timestamp">{conversation.timestamp}</span>
-                  {conversation.unread > 0 && (
-                    <span className="unread-badge">{conversation.unread}</span>
-                  )}
+                <div className="conversation-content">
+                  <div className="conversation-header">
+                    <h4 className="contact-name">{conversation.name}</h4>
+                    <span className="message-time">{conversation.timestamp}</span>
+                  </div>
+                  <div className="message-preview">
+                    <p className="last-message">{conversation.lastMessage}</p>
+                    {conversation.unread > 0 && (
+                      <span className="unread-count">{conversation.unread}</span>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -129,32 +144,54 @@ const Chat = () => {
           {activeChat ? (
             <>
               <div className="chat-header">
-                <h3>{conversations.find(c => c.id === activeChat)?.name}</h3>
+                <div className="chat-contact-info">
+                  <div className={`chat-avatar ${conversations.find(c => c.id === activeChat)?.role}`}>
+                    {conversations.find(c => c.id === activeChat)?.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="contact-details">
+                    <h3>{conversations.find(c => c.id === activeChat)?.name}</h3>
+                    <span className="contact-status">Active now</span>
+                  </div>
+                </div>
+                <div className="chat-actions">
+                  <button className="action-btn">📞</button>
+                  <button className="action-btn">📹</button>
+                  <button className="action-btn">ℹ️</button>
+                </div>
               </div>
               
               <div className="messages-container">
                 {(messages[activeChat] || []).map(message => (
                   <div 
                     key={message.id}
-                    className={`message ${message.isOwn ? 'own-message' : 'other-message'}`}
+                    className={`message-wrapper ${message.isOwn ? 'own-message' : 'other-message'}`}
                   >
-                    <div className="message-content">
-                      <p>{message.message}</p>
-                      <span className="message-time">{message.timestamp}</span>
+                    {!message.isOwn && (
+                      <div className={`message-avatar ${conversations.find(c => c.id === activeChat)?.role}`}>
+                        {conversations.find(c => c.id === activeChat)?.name.charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                    <div className="message-bubble">
+                      <p className="message-text">{message.message}</p>
+                      <span className="message-timestamp">{message.timestamp}</span>
                     </div>
                   </div>
                 ))}
               </div>
 
               <form onSubmit={handleSendMessage} className="message-input-form">
-                <input
-                  type="text"
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  placeholder="Type a message..."
-                  className="message-input"
-                />
-                <button type="submit" className="send-button">Send</button>
+                <div className="input-container">
+                  <button type="button" className="attachment-btn">📎</button>
+                  <input
+                    type="text"
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    placeholder="Type a message..."
+                    className="message-input"
+                  />
+                  <button type="button" className="emoji-btn">😊</button>
+                  <button type="submit" className="send-button">➤</button>
+                </div>
               </form>
             </>
           ) : (

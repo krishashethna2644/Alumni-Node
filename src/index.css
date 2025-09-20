@@ -35,11 +35,16 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background-color: var(--gray-50);
+  background: linear-gradient(135deg, var(--gray-50) 0%, #f8fafc 50%, var(--white) 100%);
+  background-attachment: fixed;
 }
 
 a {

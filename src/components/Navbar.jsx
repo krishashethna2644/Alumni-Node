@@ -24,7 +24,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="nav-brand">
         <Link to="/" style={{ textDecoration: 'none' }}>
-          <h2>Alumni Connect</h2>
+          <h2>Alumni Node</h2>
         </Link>
       </div>
       <div className="nav-links">
